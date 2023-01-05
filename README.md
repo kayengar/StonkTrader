@@ -22,22 +22,22 @@ To set up the program, follow these steps:
 1. Clone this repository to your local machine.
 2. Create a file called .env in the root directory of the repository.
 3. Add the following variables to the .env file, replacing the placeholder values with your own Robinhood account credentials and URLs:
-   §§§shell
+   ```shell
    ROBINHOOD_USERNAME=your_username
    ROBINHOOD_PASSWORD=your_password
    ROBINHOOD_API_TOKEN=your_api_token
    ROBINHOOD_ACCOUNT_URL=your_account_url
    ROBINHOOD_INSTRUMENT_URL=your_instrument_url
-   §§§
+   ```
 
 4. Install the required libraries by running the following command in the root directory of the repository:
-    §§§shell
+    ```shell
     pip install -r requirements.txt
-    §§§
+    ```
 
 ## Usage
 
 To use the program, modify the stocks list in the main function to include the stocks you want to trade. Then, run the program by executing the following command in the root directory of the repository:
-§§§shell
-python trading_bot.py
-§§§
+   ```shell
+   python trading_bot.py
+   ```
