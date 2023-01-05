@@ -77,3 +77,6 @@ make run
 make docker-build
 make docker-run
 ```
+## Running it on AWS
+
+Execute the CFN template at https://github.com/kayengar/StonkTrader/blob/main/infra/CFNTemplate.yaml in your AWS account
