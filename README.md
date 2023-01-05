@@ -57,3 +57,22 @@ To run the Docker container, you can use the following command:
 You can also pass arguments to the main.py script by including them after the image name when running the container. For example:
 
 ```docker run stock-trading-bot AAPL MSFT GOOG ```
+
+## Usage with Makefile
+
+This Makefile defines the following targets:
+
+install: Install the required packages
+test: Run the tests
+run: Run the main script
+docker-build: Build the Docker image
+docker-run: Run the Docker container
+To use the Makefile, you can run the make command followed by the name of the target you want to run. For example:
+
+```
+make install
+make test
+make run
+make docker-build
+make docker-run
+```
