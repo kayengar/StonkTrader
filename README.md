@@ -41,3 +41,19 @@ To use the program, modify the stocks list in the main function to include the s
    ```shell
    python trading_bot.py
    ```
+
+## Usage using Docker
+
+The Dockerfile will create a new Docker image based on the python:3.9 image, copy the code and the requirements.txt file into the container, install the required packages, and run the main.py script when the container starts.
+
+To build the Docker image, you can run the following command from the directory containing the Dockerfile:
+
+```docker build -t stock-trading-bot . ```
+
+To run the Docker container, you can use the following command:
+
+```docker run stock-trading-bot ```
+
+You can also pass arguments to the main.py script by including them after the image name when running the container. For example:
+
+```docker run stock-trading-bot AAPL MSFT GOOG ```
