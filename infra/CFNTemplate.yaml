@@ -1,0 +1,76 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Resources:
+  # Define the IAM role for the Lambda function
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: '/'
+      Policies:
+        - PolicyName: 'root'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'logs:CreateLogGroup'
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                Resource: 'arn:aws:logs:*:*:*'
+
+  # Define the S3 bucket where the code is stored
+  CodeBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: stock-trading-bot-code
+
+  # Define the Lambda function
+  StockTradingBotLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        # Specify the S3 bucket and key where the code is stored
+        S3Bucket: !Ref CodeBucket
+        S3Key: stock-trading-bot.zip
+      Role: !GetAtt LambdaRole.Arn
+      # Set the runtime and handler for the Lambda function
+      Runtime: python3.8
+      Handler: stock_trading_bot.main
+      # Set the environment variables for the Lambda function
+      Environment:
+        Variables:
+          ROBINHOOD_USERNAME: 'your-username'
+          ROBINHOOD_PASSWORD: 'your-password'
+          ROBINHOOD_ACCOUNT_URL: 'https://api.robinhood.com/accounts/123/'
+          ROBINHOOD_INSTRUMENT_URL: 'https://api.robinhood.com/instruments/456/'
+      # Set the memory and timeout for the Lambda function
+      MemorySize: 512
+      Timeout: 30
+  
+  # Define the CloudWatch Event Rule that triggers the Lambda function every hour during working hours in weekdays
+  StockTradingBotEventRule:
+    Type: AWS::Events::Rule
+    Properties:
+      ScheduleExpression: 'cron(0 9-17 ? * MON-FRI *)'
+      State: ENABLED
+      Targets:
+        - Id: StockTradingBotLambda
+          Arn: !GetAtt StockTradingBotLambda.Arn
+
+  # Define the permissions that allow the Event Rule to invoke the Lambda function
+  StockTradingBotPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt StockTradingBotLambda.Arn
+      Action: 'lambda:InvokeFunction'
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt StockTradingBotEventRule.Arn
