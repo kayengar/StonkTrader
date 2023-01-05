@@ -62,11 +62,12 @@ You can also pass arguments to the main.py script by including them after the im
 
 This Makefile defines the following targets:
 
-install: Install the required packages
-test: Run the tests
-run: Run the main script
-docker-build: Build the Docker image
-docker-run: Run the Docker container
+- install: Install the required packages
+- test: Run the tests
+- run: Run the main script
+- docker-build: Build the Docker image
+- docker-run: Run the Docker container
+
 To use the Makefile, you can run the make command followed by the name of the target you want to run. For example:
 
 ```
